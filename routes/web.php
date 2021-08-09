@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LoginController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,4 +19,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home',[HomeController::class,'index']);
+Route::get('/login',[LoginController::class,'halamanLogin'])->name('login');
+Route::post('/postlogin',[LoginController::class,'postLogin'])->name('postlogin');
+Route::get('/logout',[LoginController::class,'logout'])->name('logout');
+
+Route::group(['middleware' => ['auth','ceklevel:admin,karyawan']], function(){
+    Route::get('/home',[HomeController::class,'index'])->name('home');
+});
